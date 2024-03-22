@@ -1,0 +1,107 @@
+programa repasoEj3
+procesos
+  proceso juntarContarFlores(ES cantF:numero;E juntar:numero)
+  comenzar
+    repetir(juntar)
+      tomarFlor
+      cantF:= cantF + 1
+  fin
+  proceso juntarFloresHasta10(ES juntadasContador:numero)
+  comenzar
+    si(HayFlorEnLaEsquina)&(juntadasContador < 10)
+      tomarFlor
+      juntadasContador:= juntadasContador + 1
+  fin
+  proceso recorrerJuntarFlores(ES pasos:numero;ES juntadasContador:numero;ES esquinasOk:boolean)
+  comenzar
+    juntarFloresHasta10(juntadasContador)
+    esquinasOk:= pasos < 4
+    mientras(juntadasContador < 10)&(PosAv < 100)&(esquinasOk)
+      mover
+      juntarFloresHasta10(juntadasContador)
+      pasos:= pasos + 1
+      esquinasOk:= pasos < 4
+  fin
+  proceso depositarFlores(ES juntadas:numero)
+  comenzar
+    juntadas:= 0
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+      juntadas:= juntadas + 1 
+  fin
+areas
+  area : AreaC(1,1,100,100)
+robots
+  robot recolector
+  variables
+    juntadasContador,juntadas,miAv,miCa,pasos:numero
+    esquinasOk:boolean
+  comenzar
+    derecha
+    juntadasContador:= 0
+    juntadas:= 0
+    pasos:= 0
+    recorrerJuntarFlores(pasos,juntadasContador,esquinasOk)
+    si(~esquinasOk)
+      pasos:= 0
+    si(juntadasContador = 10)
+      juntadasContador:= 0
+    miAv:= PosAv 
+    miCa:= PosCa  
+    BloquearEsquina(10,10)  
+    Pos(10,10) 
+    depositarFlores(juntadas) 
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+    EnviarMensaje(V,robotCosecha)
+    EnviarMensaje(juntadas,robotCosecha)
+    mientras(PosAv < 100)
+      mover
+      recorrerJuntarFlores(pasos,juntadasContador,esquinasOk)
+      si(~esquinasOk)
+        pasos:= 0
+      si(juntadasContador = 10)
+        juntadasContador:= 0
+      miAv:= PosAv 
+      miCa:= PosCa 
+      BloquearEsquina(10,10) 
+      Pos(10,10)
+      depositarFlores(juntadas)
+      Pos(miAv,miCa)
+      LiberarEsquina(10,10)
+      EnviarMensaje(V,robotCosecha)
+      EnviarMensaje(juntadas,robotCosecha)
+    EnviarMensaje(F,robotCosecha)
+  fin
+  robot cosechador
+  variables
+    ok:boolean
+    i,cantF,juntar:numero
+  comenzar
+    i:= 0
+    cantF:= 0
+    mientras(i < 2)
+      RecibirMensaje(ok,*)
+      si(~ok)
+        Informar(ok)
+        i:= i + 1
+      sino
+        RecibirMensaje(juntar,*)
+        BloquearEsquina(10,10)
+        Pos(10,10)
+        juntarContarFlores(cantF,juntar)
+        Pos(1,5)
+        LiberarEsquina(10,10)
+    Informar(cantF)  
+  fin
+variables
+  robot1,robot2:recolector
+  robotCosecha:cosechador
+comenzar
+  AsignarArea(robot1,area)
+  AsignarArea(robot2,area)
+  AsignarArea(robotCosecha,area)
+  Iniciar(robot1,1,3)
+  Iniciar(robot2,1,4)
+  Iniciar(robotCosecha,1,5)
+fin

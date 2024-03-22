@@ -1,0 +1,51 @@
+Preguntas sobre el ejercicio1
+¿Esta bien la estructura?
+
+¿Qué se supone que deberia ser el ACK?
+
+
+
+caso 1: 
+	junto 5 flores y quedan más
+
+-Sale, deposita las flores pero no debe moverse
+
+caso2:
+	no junto 5 flores y no quedan más
+- Sale, no deposita y se mueve
+
+caso3:
+	junto 5 flores y no quedan más
+
+- sale, deposita y se mueve
+
+Preguntas ejercicio2
+
+- Sobre la forma en la que productor junta y cuenta los 5 papeles
+
+Esta bien que aunque salga cuando no hay mas papeles, vuelve a preguntar si hay papeles?
+
+- Sobre la forma de que los consumidores intentan tomar la X cantidad de papeles 
+
+Esta bien el proceso tomarXPapeles? y el uso de la variable pude?
+
+Si encuentro papeles deberia resetear el contador de intentetos de los consumidores?
+
+
+Preguntas ejercicio3 - Solucion A
+
+¿Esta bien realizado? ¿ Cual es la razon para que los robots tengan id's en este ejercicio?
+¿Su unica funcion no es avisarle a los demas robots que termino y esperar q que los otros le envien la misma respuesta dando a entender que terminaron?
+
+Solucion B
+
+¿Hace falta que pase el id y un fiscalizador? ¿Esta bien que solamente use un booleano?
+Más que nada para el finOtro1 y finOtro2, importa cual llega primero? (por eso cuestiono el id)
+
+Preguntas ejercicio4 
+
+¿Esta bien la solucion?
+¿El problema del bloqueo se refiere a que al ser un envio de tareas aleatorio los robots podrian nunca recibir la tarea de finalizar?
+¿O recibirla antes de que terminen las 10 repeticiones?
+
+¿Es una buena solución que las tareas aleatorias sean de 1 a la 3 y que para finalizar, luego de terminar las 10 repeticiones, envie la tarea finalizar?

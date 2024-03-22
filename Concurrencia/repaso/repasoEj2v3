@@ -1,0 +1,113 @@
+programa repasoEj2
+procesos
+  proceso juntarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:= cantF + 1
+  fin
+  proceso recorrerJuntarFlores(E pasos:numero;ES cantF:numero)
+  comenzar
+    repetir(pasos)
+      mover
+      juntarFlores(cantF)
+  fin
+  proceso depositarFlores(E cantF:numero)
+  comenzar
+    repetir(cantF)
+      depositarFlor
+  fin
+areas
+  deposito: AreaC(50,50,50,50)
+  areaFiscal : AreaP(1,4,1,4)
+  calle1 : AreaP(1,1,100,1)
+  calle2 : AreaP(1,2,100,2)
+  calle3 : AreaP(1,3,100,3)
+robots
+  robot recolector
+  variables
+    id,miAv,miCa,cantF,cantFTotal:numero
+    ok:boolean
+  comenzar
+    derecha
+    cantF:= 0
+    cantFTotal:= 0
+    RecibirMensaje(id,robotFiscal)
+    juntarFlores(cantF)
+    recorrerJuntarFlores(9,cantF)
+    cantFTotal:= cantFTotal + cantF
+    miAv:= PosAv
+    miCa:= PosCa
+    BloquearEsquina(50,50)
+    Pos(50,50)
+    depositarFlores(cantF)
+    Pos(miAv,miCa)
+    LiberarEsquina(50,50)
+    si(id = 1)
+      EnviarMensaje(V,robot2)
+      EnviarMensaje(V,robot3)
+    sino
+      si(id = 2)
+        EnviarMensaje(V,robot1)
+        EnviarMensaje(V,robot3)
+      sino
+        EnviarMensaje(V,robot1)
+        EnviarMensaje(V,robot2)
+    RecibirMensaje(ok,*)
+    RecibirMensaje(ok,*) 
+    repetir(9)
+      cantF:= 0
+      recorrerJuntarFlores(10,cantF)
+      cantFTotal:= cantFTotal + cantF
+      miAv:= PosAv
+      miCa:= PosCa
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      depositarFlores(cantF)
+      Pos(miAv,miCa)
+      LiberarEsquina(50,50)
+      si(id = 1)
+        EnviarMensaje(V,robot2)
+        EnviarMensaje(V,robot3)
+      sino
+        si(id = 2)
+          EnviarMensaje(V,robot1)
+          EnviarMensaje(V,robot3)
+        sino
+          EnviarMensaje(V,robot1)
+          EnviarMensaje(V,robot2)
+      RecibirMensaje(ok,*)
+      RecibirMensaje(ok,*)
+    EnviarMensaje(cantFTotal,robotFiscal) 
+  fin
+  robot fiscalizador
+  variables
+    ok:boolean
+    cantF,cantFTotal:numero
+  comenzar
+    cantFTotal:= 0
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    repetir(3)
+      RecibirMensaje(cantF,*)
+      cantFTotal:= cantFTotal + cantF
+    Informar(cantFTotal) 
+  fin
+variables
+  robot1,robot2,robot3:recolector
+  robotFiscal:fiscalizador
+comenzar
+  AsignarArea(robot1,deposito)
+  AsignarArea(robot1,calle1)
+  AsignarArea(robot2,deposito)
+  AsignarArea(robot2,calle2)
+  AsignarArea(robot3,deposito)
+  AsignarArea(robot3,calle3)
+  AsignarArea(robotFiscal,deposito)
+  AsignarArea(robotFiscal,areaFiscal)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,1,2)
+  Iniciar(robot3,1,3)
+  Iniciar(robotFiscal,1,4)  
+fin

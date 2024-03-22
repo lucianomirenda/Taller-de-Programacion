@@ -1,0 +1,89 @@
+programa practica3ej3
+areas
+  areaFiscal : AreaP(1,1,1,1)
+  area1  : AreaP(2,1,2,1)
+  area2  : AreaP(3,1,3,1)
+  area3  : AreaP(4,1,4,1)
+  area4  : AreaP(5,1,5,1)
+  cuadrante : AreaPC(2,2,10,10)
+robots
+  robot recolector
+  variables
+    id,av,ca,miAv,miCa,cant:numero
+    hayFlores:boolean
+  comenzar
+    miAv:= PosAv
+    miCa:= PosCa
+    cant:= 0
+    hayFlores:= V
+    RecibirMensaje(id,robotFiscal)
+    RecibirMensaje(av,robotFiscal)
+    RecibirMensaje(ca,robotFiscal)
+    mientras(hayFlores)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      si(HayFlorEnLaEsquina)
+        cant:= cant + 1
+        tomarFlor
+      sino
+        hayFlores:= F
+      Pos(miAv,miCa)
+      LiberarEsquina(av,ca)
+    EnviarMensaje(id,robotFiscal)
+    EnviarMensaje(cant,robotFiscal)
+  fin
+  robot fiscalizador
+  variables
+    randomAv,randomCa,id,cant,maxFlores,idMax:numero
+  comenzar
+    maxFlores:= -1
+    Random(randomAv,2,10)
+    Random(randomCa,2,10)
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    EnviarMensaje(randomAv,robot1)
+    EnviarMensaje(randomCa,robot1)
+    EnviarMensaje(randomAv,robot2)
+    EnviarMensaje(randomCa,robot2)
+    EnviarMensaje(randomAv,robot3)
+    EnviarMensaje(randomCa,robot3)
+    EnviarMensaje(randomAv,robot4)
+    EnviarMensaje(randomCa,robot4)
+    repetir(4)
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(cant,robot1)
+      sino
+        si(id = 2)
+          RecibirMensaje(cant,robot2)
+        sino
+          si(id = 3)
+            RecibirMensaje(cant,robot3)
+          sino
+            RecibirMensaje(cant,robot4)
+      si(cant > maxFlores)
+        maxFlores:= cant
+        idMax:= id 
+    Informar(idMax)
+  fin
+variables
+  robot1,robot2,robot3,robot4:recolector
+  robotFiscal:fiscalizador
+comenzar
+  AsignarArea(robot1,area1)
+  AsignarArea(robot1,cuadrante)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot2,cuadrante)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot3,cuadrante)
+  AsignarArea(robot4,area4)
+  AsignarArea(robot4,cuadrante)
+  AsignarArea(robotFiscal,areaFiscal)
+  Iniciar(robotFiscal,1,1)
+  Iniciar(robot1,2,1)
+  Iniciar(robot2,3,1)
+  Iniciar(robot3,4,1)
+  Iniciar(robot4,5,1)
+fin

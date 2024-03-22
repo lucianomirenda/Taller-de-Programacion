@@ -1,0 +1,77 @@
+programa practica4ej1
+procesos
+  proceso dejarXFlores(E x:numero)
+  comenzar
+    repetir(x)
+      si(HayFlorEnLaBolsa)
+        depositarFlor
+  fin
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso avanzarDejandoFlores
+  comenzar
+    depositarFlor
+    mientras(HayFlorEnLaBolsa)&(PosCa < 100)
+      mover
+      depositarFlor
+  fin
+areas
+  area : AreaC(1,1,100,100)
+robots
+  robot cliente        
+  variables
+    cantF,av,ca,id,ok:numero
+    ack:boolean
+  comenzar
+    RecibirMensaje(id,robotServidor)
+    Informar(2)
+    cantF:= 2
+    mientras(PosCa < 100)
+      av:= PosAv
+      ca:= PosCa + 1
+      EnviarMensaje(id,robotServidor)
+      EnviarMensaje(cantF,robotServidor)
+      EnviarMensaje(av,robotServidor)
+      EnviarMensaje(ca,robotServidor)
+      RecibirMensaje(ack,robotServidor)
+      Informar(5)
+      mover
+      juntarFlores
+      Pos(PosAv,PosCa-1)
+      avanzarDejandoFlores
+    EnviarMensaje(id,robotServidor)
+    EnviarMensaje(0,robotServidor)
+  fin
+  robot servidor
+  variables
+    flores,av,ca,miAv,miCa,id,contador:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    contador:= 0
+    mientras(contador <> 1)
+      Informar(1)
+      RecibirMensaje(id,robot1)
+      RecibirMensaje(flores,robot1)
+      Informar(7)
+      si(flores <> 0)
+        RecibirMensaje(av,robot1)
+        RecibirMensaje(ca,robot1)
+        Pos(av,ca)
+        dejarXFlores(flores)
+        Pos(100,100)
+        EnviarMensaje(V,robot1)
+      sino
+        contador:= contador + 1
+  fin
+variables
+  robot1:cliente
+  robotServidor:servidor
+comenzar
+  AsignarArea(robot1,area)
+  AsignarArea(robotServidor,area)
+  Iniciar(robot1,1,1)
+  Iniciar(robotServidor,100,100)
+fin

@@ -1,0 +1,280 @@
+programa practica3ejercicio6
+procesos
+  proceso izquierda
+  comenzar
+    repetir(3)
+      derecha
+  fin
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso cuadrante1
+  comenzar
+    repetir(6)
+      mover
+      juntarFlores
+    derecha
+    repetir(6)
+      si(PosAv = 4)
+        BloquearEsquina(5,8)
+        mover
+        juntarFlores
+      sino
+        si(PosAv = 5)
+          mover
+          LiberarEsquina(5,8)
+          juntarFlores
+        sino
+          mover
+          juntarFlores
+    derecha
+    repetir(6)
+      si(PosCa = 6)
+        BloquearEsquina(8,5)
+        mover
+        juntarFlores
+      sino
+        si(PosCa = 5)
+          mover
+          LiberarEsquina(8,5)
+          juntarFlores
+        sino
+          mover
+          juntarFlores
+    derecha
+    repetir(6)
+      mover
+      juntarFlores
+  fin
+  proceso cuadrante2
+  comenzar
+    repetir(10)
+      si(PosCa = 7)
+        BloquearEsquina(5,8)
+        mover
+        juntarFlores
+        juntarPapeles
+      sino
+        si(PosCa = 8)
+          mover
+          LiberarEsquina(5,8)
+          juntarFlores
+          juntarPapeles
+        sino
+          mover
+          juntarFlores
+          juntarPapeles
+    derecha
+    repetir(10)
+      si(PosAv = 8)
+        BloquearEsquina(9,15)
+        mover
+        juntarFlores
+        juntarPapeles
+      sino
+        si(PosAv = 9)
+          mover
+          LiberarEsquina(5,8)
+          juntarFlores
+          juntarPapeles
+        sino
+          mover
+          juntarFlores
+          juntarPapeles
+    derecha
+    repetir(10)
+      si(PosCa = 10)
+        BloquearEsquina(15,9)
+        mover
+        juntarFlores
+        juntarPapeles
+      sino
+        si(PosCa = 9)
+          mover
+          LiberarEsquina(15,9)
+          juntarFlores
+          juntarPapeles
+        sino
+          mover
+          juntarFlores
+          juntarPapeles
+    derecha
+    repetir(10)
+      si(PosAv = 9)
+        BloquearEsquina(8,5)
+        mover
+        juntarFlores
+        juntarPapeles
+      sino
+        si(PosAv = 8)
+          mover
+          LiberarEsquina(8,5)
+          juntarFlores
+          juntarPapeles
+        sino
+          mover
+          juntarFlores
+          juntarPapeles
+  fin
+  proceso cuadrante3
+  comenzar
+    repetir(7)
+      si(PosCa = 14)
+        BloquearEsquina(9,15)
+        mover
+        juntarPapeles
+      sino
+        si(PosCa = 15)
+          mover
+          LiberarEsquina(9,15)
+          juntarPapeles
+        sino
+          mover
+          juntarPapeles
+    derecha
+    repetir(7)
+      mover
+      juntarPapeles
+    derecha
+    repetir(7)
+      mover
+      juntarPapeles
+    derecha
+    BloquearEsquina(15,9)
+    mover
+    juntarPapeles
+    mover
+    LiberarEsquina(15,9)
+    juntarPapeles
+    repetir(5)
+      mover
+      juntarPapeles
+  fin
+areas
+  area1Lado1 : AreaP(2,2,8,2)
+  area1Lado2 : AreaP(2,3,2,8)
+  area1Lado3 : AreaPC(3,8,8,8)
+  area1Lado4 : AreaPC(8,3,8,7)
+  area2Lado1 : AreaPC(5,5,15,5)
+  area2Lado2 : AreaPC(5,6,5,15)
+  area2Lado3 : AreaPC(6,15,15,15)
+  area2Lado4 : AreaPC(15,6,15,14)
+  area3Lado1 : AreaPC(9,9,16,9)
+  area3Lado2 : AreaPC(9,10,9,16)
+  area3Lado3 : AreaP(10,16,16,16)
+  area3Lado4 : AreaP(16,10,16,15)
+  areaFiscal : AreaP(1,1,1,1)
+  recorrido1 : AreaPC(1,20,100,20)
+  recorrido2 : AreaPC(1,21,100,21)
+  recorrido3 : AreaPC(1,22,100,22)
+robots
+  robot recolector1
+  variables
+    id,calle:numero
+  comenzar
+    cuadrante1
+    RecibirMensaje(id,robotFiscal)
+    EnviarMensaje(id,robotFiscal)
+    RecibirMensaje(calle,robotFiscal)
+    Pos(1,calle)
+    repetir(2)
+      derecha
+    mientras(HayFlorEnLaBolsa)&(PosAv < 100)
+      depositarFlor
+      mover
+  fin
+  robot recolector2
+  variables
+    id,calle:numero
+  comenzar
+    cuadrante2
+    RecibirMensaje(id,robotFiscal)
+    EnviarMensaje(id,robotFiscal)
+    RecibirMensaje(calle,robotFiscal)
+    Pos(1,calle)
+    repetir(2)
+      derecha
+    mientras(HayPapelEnLaBolsa)&(HayFlorEnLaBolsa)&(PosAv < 100)
+      depositarFlor
+      depositarPapel
+      mover
+      
+  fin
+  robot recolector3
+  variables
+    id:numero
+    calle:numero
+  comenzar
+    cuadrante3
+    RecibirMensaje(id,robotFiscal)
+    EnviarMensaje(id,robotFiscal)
+    RecibirMensaje(calle,robotFiscal)
+    Pos(1,calle)
+    repetir(2)
+      derecha
+    mientras(HayPapelEnLaBolsa)&(PosAv < 100)
+      depositarPapel
+      mover
+  fin
+  robot fiscalizador
+  variables
+    id,calle,calle1,calle2,calle3:numero
+  comenzar
+    calle:= 20
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    repetir(3)
+      RecibirMensaje(id,*)
+      si(id = 1)
+        calle1:= calle
+      sino
+        si(id = 2)
+          calle2:= calle
+        sino
+          calle3:= calle
+      calle:= calle + 1
+    EnviarMensaje(calle1,robot1)
+    EnviarMensaje(calle2,robot2)
+    EnviarMensaje(calle3,robot3)
+  fin
+variables
+  robot1:recolector1
+  robot2:recolector2
+  robot3:recolector3
+  robotFiscal:fiscalizador
+comenzar
+  AsignarArea(robot1,area1Lado1)
+  AsignarArea(robot1,area1Lado2)
+  AsignarArea(robot1,area1Lado3)
+  AsignarArea(robot1,area1Lado4)
+  AsignarArea(robot2,area2Lado1)
+  AsignarArea(robot2,area2Lado2)
+  AsignarArea(robot2,area2Lado3)
+  AsignarArea(robot2,area2Lado4)
+  AsignarArea(robot3,area3Lado1)
+  AsignarArea(robot3,area3Lado2)
+  AsignarArea(robot3,area3Lado3)
+  AsignarArea(robot3,area3Lado4)
+  AsignarArea(robotFiscal,areaFiscal)
+  AsignarArea(robot1,recorrido1)
+  AsignarArea(robot1,recorrido2)
+  AsignarArea(robot1,recorrido3)
+  AsignarArea(robot2,recorrido1)
+  AsignarArea(robot2,recorrido2)
+  AsignarArea(robot2,recorrido3)
+  AsignarArea(robot3,recorrido1)
+  AsignarArea(robot3,recorrido2)
+  AsignarArea(robot3,recorrido3)
+  Iniciar(robot1,2,2)
+  Iniciar(robot2,5,5)
+  Iniciar(robot3,9,9)
+  Iniciar(robotFiscal,1,1)
+fin

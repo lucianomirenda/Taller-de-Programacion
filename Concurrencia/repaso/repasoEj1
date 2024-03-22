@@ -1,0 +1,128 @@
+programa repasoEj1
+procesos
+  proceso juntarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina) 
+      tomarFlor
+      cantF:= cantF + 1
+  fin
+  proceso juntarPapeles(ES cantP:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantP:= cantP + 1
+  fin
+  proceso recorreJuntaFlores(E pasos:numero;ES cantF:numero)
+  comenzar
+    juntarFlores(cantF)
+    repetir(pasos)
+      mover
+      juntarFlores(cantF)
+  fin
+  proceso recorreJuntaPapeles(E pasos:numero;ES cantP:numero)
+  comenzar
+    juntarPapeles(cantP)
+    repetir(pasos)
+      mover
+      juntarPapeles(cantP)
+  fin
+areas
+  area : AreaPC(1,1,100,100)
+robots
+  robot tipoFlores
+  variables
+    id,miAv,cantF:numero
+  comenzar
+    miAv:= PosAv
+    cantF:= 0
+    RecibirMensaje(id,robotFiscal)
+    recorreJuntaFlores(96,cantF)
+    BloquearEsquina(miAv,98)
+    mover
+    juntarFlores(cantF)
+    BloquearEsquina(miAv,99)
+    mover
+    LiberarEsquina(miAv,98)
+    juntarFlores(cantF)
+    mover
+    LiberarEsquina(miAv,99)
+    juntarFlores(cantF)
+    EnviarMensaje(id,robotFiscal)
+    EnviarMensaje(cantF,robotFiscal)
+  fin
+  robot tipoPapeles
+  variables
+    id,miCa,cantP:numero
+  comenzar
+    miCa:= PosCa
+    cantP:= 0
+    derecha
+    RecibirMensaje(id,robotFiscal)
+    BloquearEsquina(2,miCa)
+    mover
+    juntarPapeles(cantP)
+    BloquearEsquina(3,miCa)
+    mover
+    LiberarEsquina(2,miCa)
+    juntarPapeles(cantP)
+    mover
+    LiberarEsquina(3,miCa)
+    recorreJuntaPapeles(96,cantP)
+    EnviarMensaje(id,robotFiscal)
+    EnviarMensaje(cantP,robotFiscal)
+  fin
+  robot fiscalizador
+  variables
+    id,equipoMax,equipo,max,cantF,totalF,cantP,totalP,aux:numero
+  comenzar
+    EnviarMensaje(1,robotFlores1)
+    EnviarMensaje(2,robotFlores2)
+    EnviarMensaje(3,robotPapeles1)
+    EnviarMensaje(4,robotPapeles2)
+    totalF:= 0
+    totalP:= 0
+    max:= -1
+    repetir(4)
+      RecibirMensaje(id,*)
+      equipo:= 1
+      si(id = 1)
+        RecibirMensaje(cantF,robotFlores1)
+        totalF:= cantF + totalF
+        aux:= totalF
+      sino
+        si(id = 2)
+          RecibirMensaje(cantF,robotFlores2)
+          totalF:= cantF + totalF
+          aux:= totalF
+        sino
+          equipo:= 2
+          si(id = 3)
+            RecibirMensaje(cantP,robotPapeles1)
+            totalP:= cantP + totalP
+            aux:= totalP
+          sino
+            RecibirMensaje(cantP,robotPapeles2)
+            totalP:= cantP + totalP
+            aux:= totalP
+      si(aux > max)
+        max:= aux
+        equipoMax:= equipo
+    Informar(equipoMax)       
+  fin
+variables
+  robotFlores1,robotFlores2:tipoFlores
+  robotPapeles1,robotPapeles2:tipoPapeles
+  robotFiscal:fiscalizador
+comenzar
+  AsignarArea(robotFlores1,area)
+  AsignarArea(robotFlores2,area)
+  AsignarArea(robotPapeles1,area)
+  AsignarArea(robotPapeles2,area)
+  AsignarArea(robotFiscal,area)
+  Iniciar(robotFlores1,2,1)
+  Iniciar(robotFlores2,3,1)
+  Iniciar(robotPapeles1,1,98)
+  Iniciar(robotPapeles2,1,99)
+  Iniciar(robotFiscal,1,1)
+fin
+  

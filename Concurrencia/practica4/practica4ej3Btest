@@ -1,0 +1,126 @@
+programa practica4ejercicio3
+procesos
+  proceso juntarPapeles(ES juntados:numero;E xPapeles:numero;ES cortar:boolean)
+  comenzar
+    mientras(HayPapelEnLaEsquina)&(juntados < xPapeles)
+      tomarPapel
+      juntados:= juntados + 1
+    cortar:= (juntados = xPapeles)
+  fin
+  proceso recorrerYJuntar(E xPapeles:numero)
+  variables
+    juntados:numero
+    cortar:boolean
+  comenzar
+    cortar:= F
+    juntados:= 0
+    juntarPapeles(juntados,xPapeles,cortar)
+    mientras(PosCa<100)&(~cortar)
+      mover
+      juntarPapeles(juntados,xPapeles,cortar)
+  fin
+areas
+  area : AreaC(1,1,100,100)
+robots
+  robot recolector1
+  variables
+    id,xPapeles:numero
+    sigue1,sigue2:boolean
+  comenzar
+    sigue1:= V
+    sigue2:= V
+    RecibirMensaje(id,robotFiscal)
+    mientras(PosCa < 100)&(sigue1)&(sigue2)
+      Random(xPapeles,1,10)
+      recorrerYJuntar(xPapeles)
+      EnviarMensaje(id,robot2)
+      EnviarMensaje(V,robot2)
+      EnviarMensaje(id,robot3)
+      EnviarMensaje(V,robot3)
+      repetir(2)
+        RecibirMensaje(id,*)
+        si(id = 2)
+          RecibirMensaje(sigue1,robot2)
+        sino
+          RecibirMensaje(sigue2,robot3)
+    si(sigue1)&(sigue2)
+      EnviarMensaje(id,robot2)
+      EnviarMensaje(F,robot2)
+      EnviarMensaje(id,robot3)
+      EnviarMensaje(F,robot3)
+  fin
+  robot recolector2
+  variables
+    id,xPapeles:numero
+    sigue1,sigue2:boolean
+  comenzar
+    sigue1:= V
+    sigue2:= V
+    RecibirMensaje(id,robotFiscal)
+    mientras(PosCa < 100)&(sigue1)&(sigue2)
+      Random(xPapeles,1,10)
+      recorrerYJuntar(xPapeles)
+      EnviarMensaje(id,robot1)
+      EnviarMensaje(V,robot1)
+      EnviarMensaje(id,robot3)
+      EnviarMensaje(V,robot3)
+      repetir(2)
+        RecibirMensaje(id,*)
+        si(id = 1)
+          RecibirMensaje(sigue1,robot1)
+        sino
+          RecibirMensaje(sigue2,robot3)
+    si(sigue1)&(sigue2)
+      EnviarMensaje(id,robot1)
+      EnviarMensaje(F,robot1)
+      EnviarMensaje(id,robot3)
+      EnviarMensaje(F,robot3)
+  fin
+  robot recolector3
+  variables
+    xPapeles,id:numero
+    sigue1,sigue2:boolean
+  comenzar
+    sigue1:= V
+    sigue2:= V
+    RecibirMensaje(id,robotFiscal)
+    mientras(PosCa < 100)&(sigue1)&(sigue2)
+      Random(xPapeles,1,10)
+      recorrerYJuntar(xPapeles)
+      EnviarMensaje(id,robot1)
+      EnviarMensaje(V,robot1)
+      EnviarMensaje(id,robot2)
+      EnviarMensaje(V,robot2)
+      repetir(2)
+        RecibirMensaje(id,*)
+        si(id = 1)
+          RecibirMensaje(sigue1,robot1)
+        sino
+          RecibirMensaje(sigue2,robot2)
+    si(sigue1)&(sigue2)
+      EnviarMensaje(id,robot1)
+      EnviarMensaje(F,robot1)
+      EnviarMensaje(id,robot2)
+      EnviarMensaje(F,robot2)     
+  fin
+  robot fiscalizador
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+  fin
+variables
+  robot1:recolector1
+  robot2:recolector2
+  robot3:recolector3
+  robotFiscal:fiscalizador
+comenzar
+  AsignarArea(robot1,area)
+  AsignarArea(robot2,area)
+  AsignarArea(robot3,area)
+  AsignarArea(robotFiscal,area)
+  Iniciar(robotFiscal,100,100)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,1)
+  Iniciar(robot3,3,1)
+fin

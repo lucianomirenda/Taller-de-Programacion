@@ -1,0 +1,8 @@
+Preguntas sobre el ejercicio 2
+¿La esquina central del recorrido es 16,16?
+¿Se considera que se finaliza la carrera cuando se llega ahi o cuando terminan los robots?
+¿Estan bien las areas?
+
+Preguntas sobre el ejercicio3
+
+Esta bien que primero intente bloquear la esquina 11 antes de liberar la esquina 10?

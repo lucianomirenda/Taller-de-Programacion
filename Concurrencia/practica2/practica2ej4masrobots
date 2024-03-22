@@ -1,0 +1,201 @@
+programa practica2ej4
+procesos
+  proceso juntarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:= cantF + 1
+  fin
+  proceso juntarPapeles(ES cantP:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantP:= cantP + 1
+  fin
+  proceso totalPapelFlores(ES cant:numero)
+  variables
+    cantF,cantP:numero
+  comenzar
+    juntarFlores(cantF)
+    juntarPapeles(cantP)
+    cant:= cant + cantF + cantP
+  fin
+areas
+  areaTodos : AreaPC(25,25,75,75)
+  areaFiscal : AreaP(1,1,1,1)
+  areaRobot1 : AreaP(25,1,25,1)
+  areaRobot2 : AreaP(30,1,30,1)
+  areaRobot3 : AreaP(35,1,35,1)
+  areaRobot4 : AreaP(40,1,40,1)
+robots
+  robot robot1
+  variables
+    cant,x,y:numero
+    sigue:boolean
+    gane:boolean
+  comenzar
+    RecibirMensaje(sigue,robotF)
+    mientras(sigue)
+      RecibirMensaje(cant,robotF)
+      Random(x,25,75)
+      Random(y,25,75)
+      Pos(x,y)
+      totalPapelFlores(cant)
+      Pos(25,1)
+      EnviarMensaje(cant,robotF)
+      RecibirMensaje(sigue,robotF)
+    RecibirMensaje(gane,robotF)
+    si(gane)
+      Pos(50,50)
+  fin
+  robot robot2
+  variables
+    cant,x,y:numero
+    sigue:boolean
+    gane:boolean
+  comenzar
+    RecibirMensaje(sigue,robotF)
+    mientras(sigue)
+      RecibirMensaje(cant,robotF)
+      Random(x,25,75)
+      Random(y,25,75)
+      Pos(x,y)
+      totalPapelFlores(cant)
+      Pos(30,1)
+      EnviarMensaje(cant,robotF)
+      RecibirMensaje(sigue,robotF)
+    RecibirMensaje(gane,robotF)
+    si(gane)
+      Pos(50,50)
+  fin
+  robot robot3
+  variables
+    cant,x,y:numero
+    sigue:boolean
+    gane:boolean
+  comenzar
+    RecibirMensaje(sigue,robotF)
+    mientras(sigue)
+      RecibirMensaje(cant,robotF)
+      Random(x,25,75)
+      Random(y,25,75)
+      Pos(x,y)
+      totalPapelFlores(cant)
+      Pos(35,1)
+      EnviarMensaje(cant,robotF)
+      RecibirMensaje(sigue,robotF)
+    RecibirMensaje(gane,robotF)
+    si(gane)
+      Pos(50,50)
+  fin
+  robot robot4
+  variables
+    cant,x,y:numero
+    sigue,gane:boolean
+  comenzar
+    RecibirMensaje(sigue,robotF)
+    mientras(sigue)
+      RecibirMensaje(cant,robotF)
+      Random(x,25,75)
+      Random(y,25,75)
+      Pos(x,y)
+      totalPapelFlores(cant)
+      Pos(40,1)
+      EnviarMensaje(cant,robotF)
+      RecibirMensaje(sigue,robotF)
+    RecibirMensaje(gane,robotF)
+    si(gane)
+      Pos(50,50)
+  fin
+  robot robotFiscal
+  variables
+    id,max:numero
+    x,idMax:numero
+    cantR1:numero
+    cantR2:numero
+    cantR3:numero
+    cantR4:numero
+  comenzar
+    cantR1:=0
+    cantR2:=0
+    cantR3:=0
+    cantR4:=0
+    max:= -1
+    repetir 10
+      Random(id,1,4)
+      Informar(id)
+      si(id = 1)
+        EnviarMensaje(V,r1)
+        EnviarMensaje(cantR1,r1)
+        RecibirMensaje(cantR1,r1)
+        x:= cantR1
+      sino
+        si(id = 2)
+          EnviarMensaje(V,r2)
+          EnviarMensaje(cantR2,r2)
+          RecibirMensaje(cantR2,r2)
+          x:= cantR2
+        sino
+          si(id = 3)
+            EnviarMensaje(V,r3)
+            EnviarMensaje(cantR3,r3)
+            RecibirMensaje(cantR3,r3)
+            x:= cantR3
+          sino
+            EnviarMensaje(V,r4)
+            EnviarMensaje(cantR4,r4)
+            RecibirMensaje(cantR4,r4)
+            x:= cantR4
+      si(x > max)
+        idMax:= id
+        max:= x  
+    EnviarMensaje(F,r1)
+    EnviarMensaje(F,r2)
+    EnviarMensaje(F,r3)
+    EnviarMensaje(F,r4)
+    si(idMax = 1)
+      EnviarMensaje(V,r1)
+      EnviarMensaje(F,r2)
+      EnviarMensaje(F,r3)
+      EnviarMensaje(F,r4)
+    sino
+      si(idMax = 2)
+        EnviarMensaje(F,r1)
+        EnviarMensaje(V,r2)
+        EnviarMensaje(F,r3)
+        EnviarMensaje(F,r4)
+      sino
+        si(idMax = 3)
+          EnviarMensaje(F,r1)
+          EnviarMensaje(F,r2)
+          EnviarMensaje(V,r3)
+          EnviarMensaje(F,r4)
+        sino
+          EnviarMensaje(F,r1)
+          EnviarMensaje(F,r2)
+          EnviarMensaje(F,r3)
+          EnviarMensaje(V,r4)
+  fin
+variables
+  robotF: robotFiscal
+  r1:robot1
+  r2:robot2
+  r3:robot3
+  r4:robot4
+comenzar
+  AsignarArea(robotF,areaFiscal)
+  AsignarArea(r1,areaRobot1)
+  AsignarArea(r1,areaTodos)
+  AsignarArea(r2,areaRobot2)
+  AsignarArea(r2,areaTodos)
+  AsignarArea(r3,areaRobot3)
+  AsignarArea(r3,areaTodos)
+  AsignarArea(r4,areaRobot4)
+  AsignarArea(r4,areaTodos)
+  Iniciar(robotF,1,1)
+  Iniciar(r1,25,1)
+  Iniciar(r2,30,1)
+  Iniciar(r3,35,1)
+  Iniciar(r4,40,1)
+fin
+  

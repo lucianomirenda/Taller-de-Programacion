@@ -1,0 +1,82 @@
+programa practica4ejercicio2
+procesos
+  proceso juntarPapelesHasta5(ES cant:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)&(cant < 5)
+      tomarPapel
+      cant:= cant + 1 
+  fin
+  proceso depositarXPapeles(E X:numero)
+  comenzar
+    repetir(X)
+      depositarPapel
+  fin
+  proceso tomarXPapeles(E cant:numero;ES pude:boolean)
+  variables
+    tomados:numero
+  comenzar 
+    tomados:= 0
+    mientras(HayPapelEnLaEsquina)&(tomados < cant) 
+      tomarPapel 
+      tomados:= tomados + 1
+    si(tomados <> cant)
+      repetir(tomados)
+        depositarPapel
+    pude:= tomados = cant
+  fin
+areas
+  area : AreaC(1,1,100,100)
+robots
+  robot productor
+  variables
+    cant,av,ca:numero
+  comenzar
+    cant:= 0
+    mientras(PosCa < 100)
+      juntarPapelesHasta5(cant)
+      si(cant = 5)
+        cant:= 0
+        av:= PosAv
+        ca:= PosCa
+        BloquearEsquina(50,50)
+        Pos(50,50)
+        depositarXPapeles(5)
+        Pos(av,ca)
+        LiberarEsquina(50,50)
+      sino
+        mover
+  fin
+  robot consumidor
+  variables
+    intentos,cantP,av,ca:numero
+    pude:boolean
+  comenzar
+    intentos:= 0
+    av:= PosAv
+    ca:= PosCa
+    mientras(intentos<8)
+      Random(cantP,2,5)
+      BloquearEsquina(50,50)
+      Pos(50,50)
+      tomarXPapeles(cantP,pude)
+      Pos(av,ca)
+      LiberarEsquina(50,50)
+      si(pude)
+        depositarXPapeles(cantP)
+        intentos:= 0
+      sino
+        intentos:= intentos + 1
+  fin
+variables
+  rConsumidor1,rConsumidor2:consumidor
+  rProductor1,rProductor2:productor
+comenzar
+  AsignarArea(rConsumidor1,area)
+  AsignarArea(rConsumidor2,area)
+  AsignarArea(rProductor1,area)
+  AsignarArea(rProductor2,area)
+  Iniciar(rConsumidor1,11,1)
+  Iniciar(rConsumidor2,12,1)
+  Iniciar(rProductor1,5,1)
+  Iniciar(rProductor2,10,1)
+fin

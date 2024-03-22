@@ -1,0 +1,103 @@
+programa ejercicio3
+procesos 
+  proceso girar(E vueltas:numero)
+  comenzar
+    repetir (vueltas)
+      derecha
+  fin
+  proceso contarFlores(ES cantF:numero)
+  variables
+    cant:numero
+  comenzar
+    cant:= 0
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+      cant:= cant + 1
+    repetir (cant)
+      depositarFlor
+    cantF:= cant + cantF
+  fin
+  proceso contarPapeles(ES cantP:numero)
+  variables
+    cant:numero
+  comenzar
+    cant:= 0
+    mientras HayPapelEnLaEsquina
+      tomarPapel
+      cant:= cant + 1
+    repetir(cant)
+      depositarPapel
+    cantP:= cantP + cant
+  fin
+  proceso caminarYContar(E pasos:numero;ES cantP:numero;ES cantF:numero)
+  comenzar
+    repetir(pasos)
+      contarPapeles(cantP)
+      contarFlores(cantF)
+      mover
+    contarPapeles(cantP)
+    contarFlores(cantF)
+  fin
+  proceso escalon(E adelante:numero;E arriba:numero;ES truePapel:boolean)
+  variables
+    cantF:numero
+    cantP:numero
+  comenzar
+    cantF:= 0
+    cantP:= 0
+    caminarYContar(adelante,cantP,cantF)
+    girar(3)
+    caminarYContar(adelante,cantP,cantF)
+    derecha
+    truePapel:= ((cantP - cantF) = 1)
+  fin
+  proceso realizarEscalones(ES cant:numero)
+  variables
+    i:numero
+    okPapel:boolean
+  comenzar
+    i:= 1
+    derecha
+    repetir 4
+      escalon(i,i,okPapel)
+      si(okPapel)
+        cant:= cant + 1
+      i:= i + 1
+  fin
+areas
+  ciudad : AreaC(1,1,100,100)
+robots
+  robot tipo1
+  variables
+    cantEscalones:numero
+  comenzar
+    cantEscalones:=0
+    realizarEscalones(cantEscalones)
+    Informar(cantEscalones)
+  fin
+  robot tipo2
+  variables
+    cantEscalones:numero
+  comenzar
+    cantEscalones:= 0
+    realizarEscalones(cantEscalones)
+    Informar(cantEscalones)
+  fin
+  robot tipo3
+  variables
+    cantEscalones:numero
+  comenzar
+    cantEscalones:= 0
+    realizarEscalones(cantEscalones)
+    Informar(cantEscalones)
+  fin
+variables
+  robot1,robot2,robot3:tipo1
+comenzar
+  AsignarArea(robot1,ciudad)
+  AsignarArea(robot2,ciudad)
+  AsignarArea(robot3,ciudad)
+  Iniciar(robot1,12,14) 
+  Iniciar(robot2,17,10) 
+  Iniciar(robot3,22,6) 
+fin 

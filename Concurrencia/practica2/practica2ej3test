@@ -1,0 +1,75 @@
+programa practica2ej3
+procesos
+  proceso juntarPapeles(ES p:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      p:= p + 1
+      tomarPapel
+  fin
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso recorrerFlores(E pasos:numero)
+  comenzar
+    juntarFlores
+    repetir(pasos)
+      mover
+      juntarFlores
+  fin
+  proceso recorrerPapeles(E pasos:numero;ES cantP:numero)
+  comenzar
+    cantP:= 0
+    juntarPapeles(cantP)
+    repetir(pasos)
+      mover
+      juntarPapeles(cantP)
+  fin
+areas
+  areaA : AreaPC(1,1,20,1)
+  areaB : AreaPC(1,5,20,5)
+robots
+  robot robot1A
+  variables
+    papeles:numero
+  comenzar
+    derecha
+    recorrerPapeles(9,papeles)
+    EnviarMensaje(papeles,robot2A)
+  fin
+  robot robot2A
+  variables
+    papeles1,pepeles2,papelesTotal:numero
+  comenzar
+    derecha
+    RecibirMensaje(papeles1,robot1A)
+    recorrerPapeles(9,papeles2)
+    papelesTotal:= papeles1 + papeles2
+    Informar(papelesTotal)
+  fin
+  robot robot1B
+  comenzar
+    derecha
+    mover
+  fin
+  robot robot2B
+  comenzar
+    derecha
+    mover
+  fin
+variables
+  r1A:robot1A
+  r2A:robot2A
+  r1B:robot1B
+  r2B:robot2B
+comenzar
+  AsignarArea(r1A,areaA)
+  AsignarArea(r2A,areaA)
+  AsignarArea(r1B,areaB)
+  AsignarArea(r2B,areaB)
+  Iniciar(r1A,1,1)
+  Iniciar(r2A,11,1)
+  Iniciar(r1B,1,5)
+  Iniciar(r2B,11,5)
+fin

@@ -1,0 +1,103 @@
+programa practica2ej2
+procesos
+  proceso girar(E n:numero)
+  comenzar
+    repetir(n)
+      derecha
+  fin
+  proceso juntarFlores(ES cantFlores:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantFlores:= cantFlores + 1
+  fin
+  proceso juntarPapeles(ES cantPapeles:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantPapeles:= cantPapeles + 1
+  fin
+  proceso escalon(E ancho:numero;E alto:numero;ES masFlores:boolean)
+  variables
+    f,p:numero
+  comenzar
+    f:= 0
+    p:= 0
+    repetir(ancho)
+      juntarFlores(f)
+      juntarPapeles(p)
+      mover
+    juntarFlores(f)
+    juntarPapeles(p)
+    girar(3)
+    repetir(alto)
+      juntarFlores(f)
+      juntarPapeles(p)
+      mover
+    juntarFlores(f)
+    juntarPapeles(p)
+    derecha
+    masFlores:= f > p
+  fin
+  proceso mainEscalones(ES cantMasFlores:numero)
+  variables
+    alto:numero
+    okFlores:boolean
+  comenzar
+    cantMasFlores:= 0
+    Random(alto,1,5)
+    repetir(4)
+      escalon(1,alto,okFlores)
+      si(okFlores)
+        cantMasFlores:= cantMasFlores + 1
+  fin
+areas
+  areaJefe : AreaP(1,1,1,1)
+  area1 : AreaP(2,1,6,20)
+  area2 : AreaP(7,1,11,20)
+  area3 : AreaP(12,1,16,20)
+robots
+  robot robotJuntador
+  variables
+    id,cantMasF:numero
+  comenzar
+    derecha
+    RecibirMensaje(id,rJefe)
+    mainEscalones(cantMasF)
+    Informar(cantMasF)
+    EnviarMensaje(id,rJefe)
+    EnviarMensaje(cantMasF,rJefe)
+  fin
+  robot robotJefe
+  variables
+    id,cantEscalones,escalones:numero
+  comenzar
+    cantEscalones:= 0
+    EnviarMensaje(1,rJuntador1)
+    EnviarMensaje(2,rJuntador2)
+    EnviarMensaje(3,rJuntador3)
+    repetir(3)
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(escalones,rJuntador1)
+      sino
+        si(id = 2)
+          RecibirMensaje(escalones,rJuntador2)
+        sino
+          RecibirMensaje(escalones,rJuntador3)
+      cantEscalones:= cantEscalones + escalones
+    Informar(cantEscalones)
+  fin
+variables
+  rJuntador1,rJuntador2,rJuntador3:robotJuntador
+  rJefe:robotJefe
+comenzar
+  AsignarArea(rJefe,areaJefe)
+  AsignarArea(rJuntador1,area1)
+  AsignarArea(rJuntador2,area2)
+  AsignarArea(rJuntador3,area3)
+  Iniciar(rJefe,1,1)
+  Iniciar(rJuntador1,2,1)
+  Iniciar(rJuntador2,7,1)
+  Iniciar(rJuntador3,12,1)
+fin

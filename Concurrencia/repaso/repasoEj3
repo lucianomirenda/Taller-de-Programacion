@@ -1,0 +1,91 @@
+programa repasoEj3
+procesos
+  proceso juntarContarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:= cantF + 1
+  fin
+  proceso juntarFloresHasta10(ES juntadas:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)&(juntadas < 10)
+      tomarFlor
+  fin
+  proceso recorrerJuntarFlores(E maxPasos:numero;ES juntadas:numero)
+  variables
+    pasos:numero
+  comenzar
+    pasos:= 0
+    mientras(juntadas < 10)&(PosAv < 100)&(pasos < maxPasos)
+      mover
+      juntarFloresHasta10(juntadas)
+      pasos:= pasos + 1
+  fin
+  proceso depositarFlores
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+areas
+  area : AreaC(1,1,100,100)
+robots
+  robot recolector
+  variables
+    juntadas,miAv,miCa:numero
+  comenzar
+    derecha
+    juntadas:= 0
+    juntarFloresHasta10(juntadas)
+    recorrerJuntarFlores(4,juntadas)
+    miAv:= PosAv 
+    miCa:= PosCa 
+    BloquearEsquina(10,10) 
+    Pos(10,10)
+    depositarFlores
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+    EnviarMensaje(V,robotCosecha)
+    mientras(PosAv < 100)
+      juntadas:= 0
+      recorrerJuntarFlores(5,juntadas)
+      miAv:= PosAv 
+      miCa:= PosCa 
+      BloquearEsquina(10,10) 
+      Pos(10,10)
+      depositarFlores
+      Pos(miAv,miCa)
+      LiberarEsquina(10,10)
+      EnviarMensaje(V,robotCosecha)
+    EnviarMensaje(F,robotCosecha)
+  fin
+  robot cosechador
+  variables
+    ok:boolean
+    i,cantF:numero
+  comenzar
+    i:= 0
+    cantF:= 0
+    mientras(i < 2)
+      RecibirMensaje(ok,*)
+      si(~ok)
+        Informar(ok)
+        i:= i + 1
+      sino
+        BloquearEsquina(10,10)
+        Pos(10,10)
+        juntarContarFlores(cantF)
+        Pos(1,5)
+        LiberarEsquina(10,10)
+    Informar(cantF)  
+  fin
+variables
+  robot1,robot2:recolector
+  robotCosecha:cosechador
+comenzar
+  AsignarArea(robot1,area)
+  AsignarArea(robot2,area)
+  AsignarArea(robotCosecha,area)
+  Iniciar(robot1,1,3)
+  Iniciar(robot2,1,4)
+  Iniciar(robotCosecha,1,5)
+fin

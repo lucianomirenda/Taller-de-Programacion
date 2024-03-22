@@ -1,0 +1,38 @@
+programa practica2ej1
+procesos
+  proceso juntarFlores
+  comenzar
+    mientras HayFlorEnLaEsquina
+      tomarFlor
+  fin
+  proceso recorrerJuntarFlores(E pasos:numero)
+  comenzar
+    repetir (pasos)
+      juntarFlores
+      mover
+    juntarFlores
+  fin
+areas
+  area1 : AreaP(1,1,1,10)
+  area2 : AreaP(2,11,2,20)
+robots
+  robot robotJuntador
+  variables
+    p:numero
+  comenzar
+    p:=9
+    recorrerJuntarFlores(p)
+  fin
+  robot robotJefe
+  comenzar
+    mover
+  fin
+variables
+  rJuntador1,rJuntador2:robotJuntador
+  rJefe:robotJefe
+comenzar
+  AsignarArea(rJuntador1,area1)
+  AsignarArea(rJuntador2,area2)
+  Iniciar(rJuntador1,1,1)
+  Iniciar(rJuntador2,2,11)  
+fin

@@ -1,0 +1,24 @@
+Preguntas sobre el ejercicio 2
+¿La esquina central del recorrido es 16,16?
+¿Se considera que se finaliza la carrera cuando se llega ahi o cuando terminan los robots?
+¿Estan bien las areas?
+
+Preguntas sobre el ejercicio3
+
+Esta bien que primero intente bloquear la esquina 11 antes de liberar la esquina 10?
+
+preguntas sobre el ejercicio5
+
+¿Esta bien el código del robot corredor? ¿Usar un booleano para recorrer?
+
+preguntas sobre el ejercicio6
+
+¿Esta bien la forma de declarar las areas de los cuadrantes?
+
+¿Esta bien realizado el bloqueo o liberacion de esquina en los cuadrantes con los si anidados?
+
+¿Esta bien la forma de enviar la ubicacion en orden?
+
+¿Suponiendo que se aplica el punto 6b, como podria calcular las esquinas donde hay una posible colision?
+
+

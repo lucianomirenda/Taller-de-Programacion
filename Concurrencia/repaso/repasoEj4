@@ -1,0 +1,96 @@
+programa repasoEj4
+procesos
+  proceso juntarContarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:= cantF + 1
+  fin
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso depositarFlores
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+areas
+  area : AreaC(1,1,100,100)
+robots
+  robot florero
+  variables
+    id,miAv,miCa,av,ca:numero
+    entra:boolean
+  comenzar
+    miAv:= PosAv
+    miCa:= PosCa
+    RecibirMensaje(id,robotFiscal)
+    RecibirMensaje(entra,robotFiscal)
+    mientras(entra)
+      RecibirMensaje(av,robotFiscal)
+      RecibirMensaje(ca,robotFiscal)
+      Pos(av,ca)
+      juntarFlores
+      Pos(miAv,miCa)
+      EnviarMensaje(V,robotFiscal)
+      RecibirMensaje(entra,robotFiscal)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositarFlores
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+    EnviarMensaje(V,robotFiscal)
+  fin
+  robot fiscalizador
+  variables
+    id,av,ca,cantF:numero
+    ok:boolean
+  comenzar
+    cantF:= 0
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    repetir 8
+      Random(id,1,3)
+      Random(av,40,60)
+      Random(ca,40,60)
+      si(id = 1)
+        EnviarMensaje(V,robot1)
+        EnviarMensaje(av,robot1)
+        EnviarMensaje(ca,robot1)
+        RecibirMensaje(ok,robot1)
+      sino
+        si(id = 2)
+          EnviarMensaje(V,robot2)
+          EnviarMensaje(av,robot2)
+          EnviarMensaje(ca,robot2)
+          RecibirMensaje(ok,robot2)
+        sino
+          EnviarMensaje(V,robot3)
+          EnviarMensaje(av,robot3)
+          EnviarMensaje(ca,robot3)
+          RecibirMensaje(ok,robot3)
+    EnviarMensaje(F,robot1)
+    EnviarMensaje(F,robot2)
+    EnviarMensaje(F,robot3)
+    repetir 3
+      RecibirMensaje(ok,*)
+    Pos(10,10)
+    juntarContarFlores(cantF)
+    Informar(cantF)
+  fin
+variables
+  robot1,robot2,robot3:florero
+  robotFiscal:fiscalizador
+comenzar
+  AsignarArea(robot1,area)
+  AsignarArea(robot2,area)
+  AsignarArea(robot3,area)
+  AsignarArea(robotFiscal,area)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,1)
+  Iniciar(robot3,3,1)
+  Iniciar(robotFiscal,4,1)
+fin

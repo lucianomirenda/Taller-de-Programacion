@@ -1,0 +1,35 @@
+Preguntas practica de repaso
+
+preguntas - ejercicio1
+
+¿Esta bien bloquear las esquinas compartidas por los equipos aunque es muy poco probable que se crucen?
+
+preguntas - ejercicio2
+
+¿Podemos asumir que el robot comienza con 0 flores en la bolsa? Para solamente juntar y luego depositar mientras hay en la bolsa. 
+
+¿Puedo asumir que la esquina 50,50 no tiene flores desde el comienzo y que el robot fiscal no tiene flores en su bolsa?
+
+En caso de que no. Debería con cada robot recolector contar las flores que voy juntando, depositar esa cantidad, sumar el total en una variable global, y cuando completo la calle, enviar el valor de esa variable global al robot fiscal.
+
+¿Es correcta la modularización?¿Es necesaria?
+
+preguntas - ejercicio3
+
+Problema: Los envios de mensajes al robot cosechador quedan encolados, y al final del recorredio salta para juntar flores en la esquina 10,10 aunque este vacia.
+
+Debería tener la misma precacuión con el ejercicio dos con respecto a la cantidad de flores con las que inicia el robot, y si hay en la esquina o no?
+
+
+Esto es porque puede darse que los dos robots vayan a la esquina 10,10 varias veces antes de que pueda acceder el robot cosechador, creando una cola de mensajes, pero cuando el robot cosechador vaya una vez, va a cosechar TODAS las flores. 
+
+¿Esta bien la forma de cortar segun la cantidad de flores y pasos dados?
+
+¿Esta bien la consideración sobre las primeras 5 esquinas? considerando la primera una esquina donde hay que juntar aparte junto con las 4 siguientes, y luego mover y juntas 5 veces para el resto de esquinas. 
+
+Modularizarlo me parecio complicar la legibilidad. 
+
+
+preguntas - ejercicio4
+
+¿Cual seria la forma en la que el robot fiscal se entera de la cantidad de flores que junto cada uno?

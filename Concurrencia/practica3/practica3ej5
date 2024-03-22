@@ -1,0 +1,80 @@
+programa practica3ejercicio5
+areas
+  area1 : AreaP(4,1,4,100)
+  area2 : AreaP(6,1,6,100)
+  area3 : AreaP(8,1,8,100)
+  area4 : AreaP(10,1,10,100)
+  areaFiscal : AreaP(1,1,1,1)
+  areaFuentePapeles : AreaPC(11,11,11,11)
+robots
+  robot corredor
+  variables
+    hayPapel:boolean
+    pasos,avActual,caActual,id:numero
+  comenzar
+    hayPapel:= V
+    pasos:= 0
+    RecibirMensaje(id,robotFiscal)
+    mientras(hayPapel)&(PosCa < 100)
+      avActual:= PosAv
+      caActual:= PosCa
+      BloquearEsquina(11,11) 
+      Pos(11,11)
+      si(HayPapelEnLaEsquina)
+        tomarPapel
+      sino
+        hayPapel:= F
+      Pos(avActual,caActual)
+      LiberarEsquina(11,11)
+      si(hayPapel)
+        depositarPapel
+        mover
+        pasos:= pasos + 1
+    EnviarMensaje(id,robotFiscal)
+    EnviarMensaje(pasos,robotFiscal)
+  fin
+  robot fiscalizador
+  variables
+    id,pasos,maxPasos,maxId:numero
+  comenzar
+    maxPasos:= -1
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    EnviarMensaje(4,robot4)
+    repetir(4)
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(pasos,robot1)
+      sino
+        si(id = 2)
+          RecibirMensaje(pasos,robot2)
+        sino
+          si(id = 3)
+            RecibirMensaje(pasos,robot3)
+          sino
+            RecibirMensaje(pasos,robot4)
+      si(pasos > maxPasos)
+        maxPasos:= pasos
+        maxId:= id
+    Informar(maxId)
+  fin
+variables
+  robotFiscal : fiscalizador
+  robot1,robot2,robot3,robot4:corredor
+comenzar
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area3)
+  AsignarArea(robot4,area4)
+  AsignarArea(robot1,areaFuentePapeles)
+  AsignarArea(robot2,areaFuentePapeles)
+  AsignarArea(robot3,areaFuentePapeles)
+  AsignarArea(robot4,areaFuentePapeles)
+  AsignarArea(robotFiscal,areaFiscal)
+  Iniciar(robot1,4,1)
+  Iniciar(robot2,6,1)
+  Iniciar(robot3,8,1)
+  Iniciar(robot4,10,1)
+  Iniciar(robotFiscal,1,1)
+fin

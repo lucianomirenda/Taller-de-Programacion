@@ -1,0 +1,92 @@
+programa practica3ej1
+procesos 
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso depositarPapeles
+  comenzar
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+  proceso depositarFlores
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+  fin
+areas
+  areaFloreros : AreaPC(1,1,5,10)
+  areaPapeleros : AreaPC(6,1,10,9)
+  esquinaFlorero1 : AreaP(6,10,6,10)
+  esquinaFlorero2 : AreaP(7,10,7,10)
+  esquinaPapelero1 : AreaP(8,10,8,10)
+  esquinaPapelero2 : AreaP(9,10,9,10)
+  esquinaDeposito : AreaC(10,10,10,10)
+robots
+  robot tipoFlores
+  variables
+    av,ca,miAv,miCa:numero
+  comenzar
+    miCa:= PosCa
+    miAv:= PosAv
+    repetir(5)
+      Random(av,1,5)
+      Random(ca,1,10)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarFlores
+      Pos(miAv,miCa)
+      LiberarEsquina(av,ca)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositarFlores
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+  fin
+  robot tipoPapeles
+  variables
+    av,ca,miAv,miCa:numero
+  comenzar
+    miCa:= PosCa
+    miAv:= PosAv
+    repetir(3)
+      Random(av,6,10)
+      Random(ca,1,9)
+      BloquearEsquina(av,ca)
+      Pos(av,ca)
+      juntarPapeles
+      Pos(miAv,miCa)
+      LiberarEsquina(av,ca)
+    BloquearEsquina(10,10)
+    Pos(10,10)
+    depositarPapeles
+    Pos(miAv,miCa)
+    LiberarEsquina(10,10)
+  fin
+variables
+  robotFlores1,robotFlores2:tipoFlores
+  robotPapeles1,robotPapeles2:tipoPapeles
+comenzar
+  AsignarArea(robotFlores1,areaFloreros)
+  AsignarArea(robotFlores2,areaFloreros)
+  AsignarArea(robotPapeles1,areaPapeleros)
+  AsignarArea(robotPapeles2,areaPapeleros)
+  AsignarArea(robotFlores1,esquinaFlorero1)
+  AsignarArea(robotFlores2,esquinaFlorero2)
+  AsignarArea(robotPapeles1,esquinaPapelero1)
+  AsignarArea(robotPapeles2,esquinaPapelero2)
+  AsignarArea(robotPapeles1,esquinaDeposito)
+  AsignarArea(robotPapeles2,esquinaDeposito)
+  AsignarArea(robotFlores1,esquinaDeposito)
+  AsignarArea(robotFlores2,esquinaDeposito)
+  Iniciar(robotFlores1,6,10)
+  Iniciar(robotFlores2,7,10)
+  Iniciar(robotPapeles1,8,10)
+  Iniciar(robotPapeles2,9,10)
+fin

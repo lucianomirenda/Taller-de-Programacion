@@ -1,0 +1,102 @@
+programa practica4ej1
+procesos
+  proceso dejarXFlores(E x:numero)
+  comenzar
+    repetir(x)
+      depositarFlor
+  fin
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso avanzarDejandoFlores
+  comenzar
+    depositarFlor
+    mientras(HayFlorEnLaBolsa)&(PosCa < 100)
+      mover
+      depositarFlor
+  fin
+areas
+  area : AreaC(1,1,100,100)
+robots
+  robot cliente
+  variables
+    cantF,av,ca,id,ok:numero
+    ack:boolean
+  comenzar
+    RecibirMensaje(id,robotServidor)
+    mientras(PosCa < 100)
+      av:= PosAv
+      ca:= PosCa + 1
+      Random(cantF,1,4)
+      EnviarMensaje(id,robotServidor)
+      EnviarMensaje(cantF,robotServidor)
+      EnviarMensaje(av,robotServidor)
+      EnviarMensaje(ca,robotServidor)
+      RecibirMensaje(ack,robotServidor)
+      mover
+      juntarFlores
+      Pos(PosAv,PosCa-1)
+      avanzarDejandoFlores
+    EnviarMensaje(id,robotServidor)
+    EnviarMensaje(0,robotServidor)
+  fin
+  robot servidor
+  variables
+    flores,av,ca,miAv,miCa,id,contador:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    contador:= 0
+    mientras(contador < 3)
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(flores,robot1)
+        si(flores <> 0)
+          RecibirMensaje(av,robot1)
+          RecibirMensaje(ca,robot1)
+          Pos(av,ca)
+          dejarXFlores(flores)
+          Pos(100,100)
+          EnviarMensaje(V,robot1)
+        sino
+          contador:= contador + 1
+      sino
+        si(id = 2)
+          RecibirMensaje(flores,robot2)
+          si(flores <> 0)
+            RecibirMensaje(av,robot2)
+            RecibirMensaje(ca,robot2)
+            Pos(av,ca)
+            dejarXFlores(flores)
+            Pos(100,100)
+            EnviarMensaje(V,robot2)
+          sino
+            contador:= contador + 1
+        sino
+          RecibirMensaje(flores,robot3)
+          si(flores <> 0)
+            RecibirMensaje(av,robot3)
+            RecibirMensaje(ca,robot3)
+            Pos(av,ca)
+            dejarXFlores(flores)
+            Pos(100,100)
+            EnviarMensaje(V,robot3)
+          sino
+            contador:= contador + 1
+  fin
+variables
+  robot1,robot2,robot3:cliente
+  robotServidor:servidor
+comenzar
+  AsignarArea(robot1,area)
+  AsignarArea(robot2,area)
+  AsignarArea(robot3,area)
+  AsignarArea(robotServidor,area)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,2,1)
+  Iniciar(robot3,3,1)
+  Iniciar(robotServidor,100,100)
+fin

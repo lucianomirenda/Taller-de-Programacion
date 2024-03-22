@@ -1,0 +1,109 @@
+programa practica2ej3
+procesos
+  proceso juntarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      cantF:= cantF + 1
+      tomarFlor
+  fin
+  proceso juntarPapel(ES cantP:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      cantP:= cantP + 1
+      tomarPapel
+  fin
+  proceso recorrerJuntarFlor(E pasos:numero;ES cantF:numero)
+  comenzar
+    repetir(pasos)
+      juntarFlores(cantF)
+      mover
+    juntarFlores(cantF)
+  fin
+  proceso recorrerJuntarPapel(E pasos:numero;ES cantP:numero)
+  comenzar
+    repetir(pasos)
+      juntarPapel(cantP)
+      mover
+    juntarPapel(cantP)
+  fin
+areas
+  areaA11 :  AreaP(1,1,10,1)
+  areaA12 :  AreaP(21,1,30,1)
+  areaA21 :  AreaP(11,1,20,1)
+  areaA22 :  AreaP(31,1,40,1)
+  areaB11 :  AreaP(1,5,10,5)
+  areaB12 :  AreaP(21,5,30,5)
+  areaB21 :  AreaP(11,5,20,5)
+  areaB22 :  AreaP(31,5,40,5)
+robots
+  robot robotA1
+  variables
+    cantP:numero
+  comenzar
+    derecha
+    cantP:=0
+    recorrerJuntarPapel(9,cantP)
+    EnviarMensaje(cantP,rA2)
+    Pos(PosAv+11,PosCa)
+    RecibirMensaje(cantP,rA2)
+    recorrerJuntarPapel(9,cantP)
+    EnviarMensaje(cantP,rA2)
+  fin
+  robot robotA2
+  variables
+    cantP:numero
+  comenzar
+    derecha
+    RecibirMensaje(cantP,rA1)
+    recorrerJuntarPapel(9,cantP)
+    EnviarMensaje(cantP,rA1)
+    Pos(PosAv+11,PosCa)
+    RecibirMensaje(cantP,rA1)
+    recorrerJuntarPapel(9,cantP)
+    Informar(cantP)
+  fin
+  robot robotB1 
+  variables
+    cantF:numero
+  comenzar
+    derecha
+    cantF:=0
+    recorrerJuntarFlor(9,cantF)
+    EnviarMensaje(cantF,rB2)
+    Pos(PosAv+11,PosCa)
+    RecibirMensaje(cantF,rB2)
+    recorrerJuntarFlor(9,cantF)
+    EnviarMensaje(cantF,rB2)
+  fin
+  robot robotB2
+  variables
+    cantF:numero
+  comenzar
+    derecha
+    RecibirMensaje(cantF,rB1)
+    recorrerJuntarFlor(9,cantF)
+    EnviarMensaje(cantF,rB1)
+    Pos(PosAv+11,PosCa)
+    RecibirMensaje(cantF,rB1)
+    recorrerJuntarFlor(9,cantF)
+    Informar(cantF)
+  fin
+variables
+  rA1:robotA1
+  rA2:robotA2
+  rB1:robotB1
+  rB2:robotB2 
+comenzar
+  AsignarArea(rA1,areaA11)
+  AsignarArea(rA1,areaA12)
+  AsignarArea(rA2,areaA21)
+  AsignarArea(rA2,areaA22)
+  AsignarArea(rB1,areaB11)
+  AsignarArea(rB1,areaB12)
+  AsignarArea(rB2,areaB21)
+  AsignarArea(rB2,areaB22)
+  Iniciar(rA1,1,1)
+  Iniciar(rA2,11,1)
+  Iniciar(rB1,1,5)
+  Iniciar(rB2,11,5)
+fin

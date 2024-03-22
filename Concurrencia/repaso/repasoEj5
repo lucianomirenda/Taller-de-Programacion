@@ -1,0 +1,76 @@
+programa repasoEj5
+procesos
+  proceso juntarXPapeles(E X:numero)
+  comenzar
+    repetir(X)
+      tomarPapel
+  fin
+  proceso depositarXPapeles(E X:numero)
+  comenzar
+    repetir(X)
+      depositarPapel
+  fin
+areas
+  area : AreaC(100,1,100,1)
+  area1 : AreaP(10,1,10,1)
+  area2 : AreaP(11,1,11,1)
+  area3 : AreaP(12,1,12,1)
+  area4 : AreaP(13,1,13,1)
+robots
+  robot cliente
+  variables
+    miAv,miCa,id,cantP:numero
+  comenzar
+    miAv:= PosAv
+    miCa:= PosCa
+    RecibirMensaje(id,robotServidor)
+    repetir(4)
+      EnviarMensaje(id,robotServidor)
+      RecibirMensaje(cantP,robotServidor)
+      BloquearEsquina(100,1)
+      Pos(100,1)
+      juntarXPapeles(cantP)
+      Pos(miAv,miCa)
+      LiberarEsquina(100,1)
+      depositarXPapeles(cantP)
+  fin
+  robot servidor
+  variables
+    X,id:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    EnviarMensaje(3,robot3)
+    repetir(12)
+      RecibirMensaje(id,*)
+      Random(X,1,5)
+      BloquearEsquina(100,1)
+      Pos(100,1)
+      depositarXPapeles(X)
+      Pos(13,1)
+      LiberarEsquina(100,1)
+      si(id = 1)
+        EnviarMensaje(X,robot1)
+      sino
+        si(id = 2)
+          EnviarMensaje(X,robot2)
+        sino
+          EnviarMensaje(X,robot3)
+  fin
+variables
+  robot1,robot2,robot3:cliente
+  robotServidor:servidor
+comenzar
+  AsignarArea(robot1,area)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot3,area)
+  AsignarArea(robot3,area3)
+  AsignarArea(robotServidor,area)
+  AsignarArea(robotServidor,area4)
+  Iniciar(robot1,10,1)
+  Iniciar(robot2,11,1)
+  Iniciar(robot3,12,1)
+  Iniciar(robotServidor,13,1)
+fin

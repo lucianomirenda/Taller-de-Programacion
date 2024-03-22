@@ -1,0 +1,125 @@
+programa practica3ej2
+procesos
+  proceso izquierda
+  comenzar
+    repetir(3)
+      derecha
+  fin
+  proceso juntarFlores(ES cantF:numero)
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+      cantF:= cantF + 1
+  fin
+  proceso juntarPapeles(ES cantP:numero)
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+      cantP:= cantP + 1
+  fin
+  proceso caminar(E pasos:numero)  
+  comenzar
+    repetir(pasos)
+      mover
+  fin 
+  proceso escalonFlores(E dim:numero;ES cantF:numero)
+  comenzar
+    caminar(dim)
+    juntarFlores(cantF)
+    derecha
+    caminar(dim)
+    juntarFlores(cantF)
+    izquierda
+  fin
+  proceso escalonPapeles(E dim:numero;ES cantP:numero)
+  comenzar
+    caminar(dim)
+    juntarPapeles(cantP)
+    izquierda
+    caminar(dim)
+    juntarPapeles(cantP)
+    derecha
+  fin
+areas
+  area1 : AreaP(1,1,14,30)
+  area12 : AreaP(15,15,15,16)
+  area2 : AreaP(17,1,31,30)
+  areaCentral : AreaPC(16,16,16,16)
+  areaFiscal : AreaP(15,1,15,1)
+robots
+  robot corredor1
+  variables
+    n:numero
+    cantF:numero
+  comenzar
+    n:= 5
+    cantF:= 0
+    juntarFlores(cantF)
+    repetir(4)
+      escalonFlores(n,cantF)
+      n:= n - 1
+    mover
+    juntarFlores(cantF)
+    derecha
+    BloquearEsquina(16,16)
+    EnviarMensaje(1,robotF)
+    mover
+    juntarFlores(cantF)
+    Pos(15,16)
+    LiberarEsquina(16,16)
+    repetir(2)
+      izquierda
+    repetir(4)
+      n:= n + 1
+      escalonFlores(n,cantF)
+    Informar(cantF)
+  fin
+  robot corredor2
+  variables
+    n:numero
+    cantP:numero
+  comenzar
+    n:= 5
+    cantP:= 0
+    juntarPapeles(cantP)
+    repetir(4)
+      escalonPapeles(n,cantP)
+      n:= n - 1
+    mover
+    juntarPapeles(cantP)
+    izquierda
+    BloquearEsquina(16,16)
+    EnviarMensaje(2,robotF)
+    mover
+    juntarPapeles(cantP)
+    Pos(17,16)
+    LiberarEsquina(16,16)
+    repetir(2)
+      derecha
+    repetir(4)
+      n:= n + 1
+      escalonPapeles(n,cantP)
+    Informar(cantP)
+  fin
+  robot robotFiscal
+  variables
+    id:numero
+  comenzar
+    RecibirMensaje(id,*)
+    Informar(id)
+  fin
+variables
+  robot1:corredor1
+  robot2:corredor2
+  robotF:robotFiscal
+comenzar
+  AsignarArea(robot1,area1)
+  AsignarArea(robot1,area12)
+  AsignarArea(robot1,areaCentral)
+  AsignarArea(robot2,area2)
+  AsignarArea(robot2,areaCentral)
+  AsignarArea(robotF,areaFiscal)
+  Iniciar(robot1,1,1)
+  Iniciar(robot2,31,1)
+  Iniciar(robotF,15,1)
+fin

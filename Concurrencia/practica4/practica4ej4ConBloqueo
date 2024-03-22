@@ -1,0 +1,92 @@
+programa practica4ejercicio4
+procesos
+  proceso juntarPapeles
+  comenzar
+    mientras(HayPapelEnLaEsquina)
+      tomarPapel
+  fin
+  proceso juntarFlores
+  comenzar
+    mientras(HayFlorEnLaEsquina)
+      tomarFlor
+  fin
+  proceso vaciarBolsa
+  comenzar
+    mientras(HayFlorEnLaBolsa)
+      depositarFlor
+    mientras(HayPapelEnLaBolsa)
+      depositarPapel
+  fin
+areas
+  areaCompartida : AreaPC(2,2,100,100)
+  areaFiscal : AreaP(1,1,1,1)
+  area1 : AreaP(2,1,2,1)
+  area2 : AreaP(3,1,3,1)
+robots
+  robot trabajadores
+  variables
+    id,tarea,miAv,miCa,av,ca:numero
+    terminar:boolean
+  comenzar
+    terminar:= F
+    miAv:= PosAv
+    miCa:= PosCa
+    RecibirMensaje(id,robotFiscal)
+    mientras(~terminar)
+      RecibirMensaje(tarea,robotFiscal)
+      si(tarea = 4)
+        terminar:= V
+      sino
+        RecibirMensaje(av,robotFiscal)
+        RecibirMensaje(ca,robotFiscal)
+        BloquearEsquina(av,ca)
+        Pos(av,ca)
+        si(tarea = 1)
+          juntarFlores
+        sino
+          si(tarea = 2)
+            juntarPapeles
+          sino
+            vaciarBolsa
+        Pos(miAv,miCa)
+        LiberarEsquina(av,ca)   
+  fin
+  robot fiscalizador
+  variables
+    id,tarea,av,ca:numero
+  comenzar
+    EnviarMensaje(1,robot1)
+    EnviarMensaje(2,robot2)
+    repetir(100)
+      Random(tarea,1,4)
+      Random(id,1,2)
+      si(tarea = 4)
+        si(id = 1)
+          EnviarMensaje(tarea,robot1)
+        sino
+          EnviarMensaje(tarea,robot1)
+      sino
+        Random(av,2,100)
+        Random(ca,2,100)
+        si(id = 1)
+          EnviarMensaje(tarea,robot1)
+          EnviarMensaje(av,robot1)
+          EnviarMensaje(ca,robot1)
+        sino
+          EnviarMensaje(tarea,robot2)
+          EnviarMensaje(av,robot2)
+          EnviarMensaje(ca,robot2)
+  fin
+variables
+  robot1,robot2:trabajadores
+  robotFiscal:fiscalizador
+comenzar
+  AsignarArea(robot1,areaCompartida)
+  AsignarArea(robot2,areaCompartida)
+  AsignarArea(robot1,area1)
+  AsignarArea(robot2,area2)
+  AsignarArea(robotFiscal,areaFiscal)
+  Iniciar(robot1,2,1)
+  Iniciar(robot2,3,1)
+  Iniciar(robotFiscal,1,1)
+fin

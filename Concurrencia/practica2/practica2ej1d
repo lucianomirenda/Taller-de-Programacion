@@ -1,0 +1,93 @@
+programa practica2ej1
+procesos
+  proceso juntarFlores(ES cantF:numero)
+  comenzar
+    mientras HayFlorEnLaEsquina
+      cantF:= cantF + 1
+      tomarFlor
+  fin
+  proceso recorrerJuntarFlores(E pasos:numero;ES cantF:numero)
+  comenzar
+    cantF:= 0
+    repetir (pasos)
+      juntarFlores(cantF)
+      mover
+    juntarFlores(cantF)
+  fin
+areas
+  area1 : AreaP(1,1,1,10)
+  area2 : AreaP(2,11,2,20)
+  area3 : AreaP(3,21,3,30)
+  area4 : AreaP(4,31,4,40)
+  area5 : AreaP(5,41,5,50)
+  area6 : AreaP(6,51,6,60)
+  areaJefe : AreaP(2,1,2,1)
+robots
+  robot robotJuntador
+  variables
+    p,f,id:numero
+  comenzar
+    p:=9
+    RecibirMensaje(id,rJefe)
+    recorrerJuntarFlores(p,f)
+    EnviarMensaje(id,rJefe)
+    EnviarMensaje(f,rJefe)
+  fin
+  robot robotJefe
+  variables
+    maxf,minf,maxR,minR,id,flor:numero
+  comenzar
+    minf:= 100000
+    maxf:= -1
+    EnviarMensaje(1,rJuntador1)
+    EnviarMensaje(2,rJuntador2)
+    EnviarMensaje(3,rJuntador3)
+    EnviarMensaje(4,rJuntador4)
+    EnviarMensaje(5,rJuntador5)
+    EnviarMensaje(6,rJuntador6)
+    repetir(6)
+      RecibirMensaje(id,*)
+      si(id = 1)
+        RecibirMensaje(flor,rJuntador1)
+      sino
+        si(id = 2)
+          RecibirMensaje(flor,rJuntador2)
+        sino
+          si(id = 3)
+            RecibirMensaje(flor,rJuntador3)
+          sino
+            si(id = 4)
+              RecibirMensaje(flor,rJuntador4)
+            sino
+              si(id = 5)
+                RecibirMensaje(flor,rJuntador5)
+              sino
+                RecibirMensaje(flor,rJuntador6)
+      si(flor > maxf)
+        maxf:= flor
+        maxR:= id
+      si(flor < minf)
+        minf:= flor
+        minR:= id
+    Informar(maxR)
+    Informar(maxf - minf)
+  fin
+variables
+  rJuntador1,rJuntador2,rJuntador3, rJuntador4, rJuntador5,rJuntador6:robotJuntador
+  rJefe:robotJefe
+comenzar
+  AsignarArea(rJuntador1,area1)
+  AsignarArea(rJuntador2,area2)
+  AsignarArea(rJuntador3,area3)
+  AsignarArea(rJuntador4,area4)
+  AsignarArea(rJuntador5,area5)
+  AsignarArea(rJuntador6,area6)
+  AsignarArea(rJefe,areaJefe)
+  Iniciar(rJuntador1,1,1)
+  Iniciar(rJuntador2,2,11)
+  Iniciar(rJuntador3,3,21)
+  Iniciar(rJuntador4,4,31)
+  Iniciar(rJuntador5,5,41)
+  Iniciar(rJuntador6,6,51)  
+  Iniciar(rJefe,2,1)
+fin
